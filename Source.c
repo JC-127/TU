@@ -14,16 +14,16 @@
 int main()
 {
 	//file will be called to read and print the text file for the user
-	//wcat();
+	wcat();
 	
 	//file will be called to look for the specified term for the user and print the line number
-	//wgrep();
+	wgrep();
 	
 	//file will be called to compress the file 
-	//wzip();
+	wzip();
 	
 	//file will be called to decompress the file
-	//wunzip();
+	wunzip();
 	
 
 	
