@@ -79,7 +79,7 @@ wcat()
 	}//edn while()
 	*/
 	 
-	 /*
+	/*
 	 //ATTEMPT 1
 
 	printf("Enter name of file (CASE SENSITIVE): \n");

@@ -7,25 +7,20 @@
 #include <string.h>
 
 //VARIABLES
-char term[20];
+char term[20], str[20], fName[50], words[50];
 FILE *fp;
-int line, col;
-
-
-#define BUFFER_SIZE 1000
+int count;
 
 int wgrep()
 {
-	//store the textfile in the pointer	   
-	fp = "C:\Users\jcmer\source\Archangels.txt";
+	//hardcoded address  
+	fName == "C:\Users\jcmer\source\Archangels.txt";
 
-	//Input a word, or character to search in the text file 
-	printf("Enter word to search in file: ");
-	scanf("%s", term);
-
+	gets(fName);
+	printf("Fetching File...");
 
 	//Try to open file and read it
-	fopen(fp, "r");
+	fp = fopen(fName, "r");
 
 	//if file can not be opened or does not exist then exit 
 	if (fp == NULL)
@@ -33,6 +28,34 @@ int wgrep()
 		printf("Error: Unable to open file or file DNE!.\n");
 		exit(0);
 	}//end if()
+
+	else
+	{
+		//Input a word, or character to search in the text file 
+		printf("\n\nEnter word to search in file: ");
+		scanf("%s", term);
+
+		//loop through text file 
+		for (count = 0; count < strlen(fp); count++)
+		{
+			getline();
+			if (fp[count] == term)
+			{
+				printf("\n '%c' is Found at Position %d ", term, count + 1);
+			}//end if()
+
+			else
+			{
+				printf("Error: Term is not in text file");
+			}//end else()
+
+		}//end for()
+
+	}//end else()
+
+		/*
+
+	ATTEMPT 2
 
 	else
 	{
@@ -61,13 +84,13 @@ int wgrep()
 // using line and column.
 int indexOf(FILE *fptr, const char *word, int *line, int *col)
 {
-	char str[BUFFER_SIZE];
+	char str[1000];
 	char *pos;
 
 	*line = -1;
 	*col = -1;
 
-	while ((fgets(str, BUFFER_SIZE, fptr)) != NULL)
+	while ((fgets(str, 1000, fptr)) != NULL)
 	{
 		*line += 1;
 
@@ -76,12 +99,14 @@ int indexOf(FILE *fptr, const char *word, int *line, int *col)
 
 		if (pos != NULL)
 		{
-			// First index of word in str is 
+			// First index of word in str is
 			// Memory address of pos - memory
 			// address of str.
 			*col = (pos - str);
 			break;
 		}//end if()
+
+
 	}//end while()
 
 
@@ -91,61 +116,62 @@ int indexOf(FILE *fptr, const char *word, int *line, int *col)
 		*line = -1;
 	}//end if()
 
-	return *col;
+		return *col;
 
-
-	/*
-
-		ATTEMPT 1
-
-		NextChar = fgetc(fp);
-		while (NextChar != EOF)
-		{
-
-			if (term == NextChar)
-			{
-				printf("The Location was found at line %d", index );
-			}//end if()
-
-			else
-			{
-				printf("Error: Location can not be found\n");
-				exit(0);
-			}//end else
-
-
-		}//end while()
-
-		fclose("C:\Users\jcmer\source\Archangels.txt");
-		return 0;
 		*/
 
 		/*
-				Reference Code from previous project I did
-				Used the logic and manipulated it for this purpose
 
-				int index = 0;
-				*h == term;
+			ATTEMPT 1
 
-				for (NULL; *h != '\0'; h++)
+			NextChar = fgetc(fp);
+			while (NextChar != EOF)
+			{
+
+				if (term == NextChar)
 				{
-					index++;
+					printf("The Location was found at line %d", index );
+				}//end if()
 
-					if (*h == *n)
+				else
+				{
+					printf("Error: Location can not be found\n");
+					exit(0);
+				}//end else
+
+
+			}//end while()
+
+			fclose("C:\Users\jcmer\source\Archangels.txt");
+			return 0;
+			*/
+
+		/*
+					Reference Code from previous project I did
+					Used the logic and manipulated it for this purpose
+
+					int index = 0;
+					*h == term;
+
+					for (NULL; *h != '\0'; h++)
 					{
-						printf("First occurrence was found at %s, %d ", h, index);
+						index++;
 
-						int y = malloc(sizeof(int));
-						y = h;
-						return y;
-					}//end if()
-				}//end for()
-				printf("NULL, first occurrence was not found...");
+						if (*h == *n)
+						{
+							printf("First occurrence was found at %s, %d ", h, index);
 
-				int *z = malloc(sizeof(unsigned int));
-				z = NULL;
-				return z;
+							int y = malloc(sizeof(int));
+							y = h;
+							return y;
+						}//end if()
+					}//end for()
+					printf("NULL, first occurrence was not found...");
 
-				*/
+					int *z = malloc(sizeof(unsigned int));
+					z = NULL;
+					return z;
+
+					*/
 
 }//end wgrep()
