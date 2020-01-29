@@ -126,4 +126,6 @@ int wzip()
 	
 	printf("%c%d", cur, ctr);
 	
+	return 0;
+	
 }//end wzipwunzip()
