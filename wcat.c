@@ -47,6 +47,8 @@ int wcat()
 
 	}//end else()
 
+	return 0;
+	
 	//PREVIOUS ATTEMPTS BELOW
 
 	/*
