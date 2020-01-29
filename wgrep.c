@@ -76,6 +76,8 @@ int wgrep()
 		}//end for()
 
 	}//end else()
+	
+	return 0;
 
 	/*
 	//ATTEMPT 3
