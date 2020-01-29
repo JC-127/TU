@@ -1,4 +1,4 @@
-/*This file will read a file that the user specifically inputs for (CASE SENSITIVE) 
+/*This file will read a file that the user specifically inputs for (CASE SENSITIVE)
 and it will print the containing file for the user
 */
 
@@ -8,21 +8,23 @@ and it will print the containing file for the user
 
 
 //VARIABLES
-char fName[50], NextChar;
-//SName = "C:\Users\jcmer\source\Archangels.txt";
+char NextChar;
+char fName[50]; //= "C:\Users\jcmer\source\Archangels.txt"
 FILE *fp;
- 
-wcat()
+
+int wcat()
 {
-	printf("Enter file name (CASE SENSITIVE): \n");
+
+	printf("Enter file location:\n");
 	scanf("%s", fName);
 
+
 	//ATTEMPT 4
-	
+
 	//The filename for me is called Archangels.txt 
 	//Located in C:\Users\jcmer\source\Archangels.txt and this will be inputted by the user
-	fp = fopen(fName, "r"); 
-		
+	fp = fopen(fName, "r");
+
 	//self explanatory, if S*** hits the fan, it tells you
 	if (fp == NULL)
 	{
@@ -32,17 +34,16 @@ wcat()
 
 	//If it doesn't it will read the next character as long as the its not the end of the file 
 	// and it prints it.
-	else 
+	else
 	{
 		NextChar = fgetc(fp);
-		while (NextChar != EOF) 
+		while (NextChar != EOF)
 		{
 			printf("%c", NextChar);
 			NextChar = fgetc(fp);
 		}//end while()
 
-		fclose(fName);
-		return 0;
+		fclose(fp);
 
 	}//end else()
 
@@ -78,16 +79,16 @@ wcat()
 		fclose(fp);
 	}//edn while()
 	*/
-	 
+
 	/*
 	 //ATTEMPT 1
 
 	printf("Enter name of file (CASE SENSITIVE): \n");
 	scanf("%s", &fName);
 
-	if (&fName == tName || &fName != NULL) 
+	if (&fName == tName || &fName != NULL)
 	{
-	
+
 		fopen(tName, "r");
 
 		while (tName != '\0')
@@ -98,10 +99,10 @@ wcat()
 
 		Sfile[i] = '\0';
 		return Sfile;
-		
+
 	}//end if()
-	
-	else 
+
+	else
 	{
 		printf("Error: File DNE\n");
 		exit(0);

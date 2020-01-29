@@ -5,22 +5,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#define MAX_SIZE 100
 
 //VARIABLES
-char term[20], str[20], fName[50], words[50];
+char fName[MAX_SIZE];
+char str[MAX_SIZE];
+char word[MAX_SIZE];
+
 FILE *fp;
-int count;
+
+int i, j, found;
+int strLen, wordLen;
+
 
 int wgrep()
 {
+
 	//hardcoded address  
 	fName == "C:\Users\jcmer\source\Archangels.txt";
-
-	gets(fName);
-	printf("Fetching File...");
+	printf("Fetching File...\n");
 
 	//Try to open file and read it
+	//if read then write
 	fp = fopen(fName, "r");
+	fp = fopen("C:\Users\jcmer\source", "w+");
 
 	//if file can not be opened or does not exist then exit 
 	if (fp == NULL)
@@ -31,15 +39,60 @@ int wgrep()
 
 	else
 	{
-		//Input a word, or character to search in the text file 
+
+		strLen = strlen(fp);  //length of the string
+		wordLen = strlen(word); //length of word 
+
+		fgets(str, MAX_SIZE, fp);
+		printf("Enter input to search: ");
+		scanf("%s", word);
+
+
+		//Run a loop from starting index of string to
+		//length of string - word length
+
+		for (i = 0; i < strLen - wordLen; i++)
+		{
+			// Match word at current position
+			found = 1;
+			for (j = 0; j < wordLen; j++)
+			{
+				// If word is not matched
+				if (str[i + j] != word[j])
+				{
+					found = 0;
+					printf("Input not found...");
+					break;
+				}//end if()
+
+			}//end for()
+
+			// If word have been found then print found message
+			if (found == 1)
+			{
+				printf("%s found \n at index: %d \n", word, i);
+			}//end if()
+
+		}//end for()
+
+	}//end else()
+
+	/*
+	//ATTEMPT 3
+	else
+	{
+
+		words == (fp, "w");
+
+		//Input a word, or character to search in the text file
 		printf("\n\nEnter word to search in file: ");
 		scanf("%s", term);
 
-		//loop through text file 
-		for (count = 0; count < strlen(fp); count++)
+		//loop through text file
+		for (count = 0; count < strlen(words); count++)
 		{
-			getline();
-			if (fp[count] == term)
+			getc(words);
+			if (words[count] == term)
 			{
 				printf("\n '%c' is Found at Position %d ", term, count + 1);
 			}//end if()
@@ -53,35 +106,37 @@ int wgrep()
 
 	}//end else()
 
-		/*
+	*/
 
-	ATTEMPT 2
+	/*
 
-	else
-	{
-		// Find index of word in fp by calling a function
-		indexOf(fp, term, &line, &col);
+		ATTEMPT 2
 
-		if (line != -1)
-		{
-			printf("'%s' found at line: %d, col: %d\n", term, line + 1, col + 1);
-		}//end if()
 		else
 		{
-			printf("'%s' does not exists.", term);
-		}//end else
+			// Find index of word in fp by calling a function
+			indexOf(fp, term, &line, &col);
 
-	}//end else()
+			if (line != -1)
+			{
+				printf("'%s' found at line: %d, col: %d\n", term, line + 1, col + 1);
+			}//end if()
+			else
+			{
+				printf("'%s' does not exists.", term);
+			}//end else
 
-	// Close file
-	fclose(fp);
+		}//end else()
 
-	return 0;
-}//end wgrep()
+		// Close file
+		fclose(fp);
 
-//FUNCTION
-//Finds, first index of a word in given file. First index is represented
-// using line and column.
+		return 0;
+	}//end wgrep()
+
+	//FUNCTION
+	//Finds, first index of a word in given file. First index is represented
+	// using line and column.
 int indexOf(FILE *fptr, const char *word, int *line, int *col)
 {
 	char str[1000];
@@ -120,7 +175,7 @@ int indexOf(FILE *fptr, const char *word, int *line, int *col)
 
 		*/
 
-		/*
+	/*
 
 			ATTEMPT 1
 
@@ -146,7 +201,7 @@ int indexOf(FILE *fptr, const char *word, int *line, int *col)
 			return 0;
 			*/
 
-		/*
+	/*
 					Reference Code from previous project I did
 					Used the logic and manipulated it for this purpose
 
