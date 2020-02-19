@@ -1,0 +1,6 @@
+﻿  EH.cpp
+C:\Users\jcmer\Downloads\EH.cpp(326,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\jcmer\Downloads\EH.cpp(366,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\jcmer\Downloads\EH.cpp(369,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jcmer\Downloads\EH.cpp(371,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  DES.vcxproj -> C:\Users\jcmer\source\repos\DES\Debug\DES.exe
