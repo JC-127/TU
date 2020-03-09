@@ -19,7 +19,7 @@ enum Commands
 
 enum directives
 {
-	inputRed, outputRed
+	RedirectedInput, RedirectedOutput
 };
 
 
