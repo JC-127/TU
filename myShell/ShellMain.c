@@ -37,5 +37,49 @@ int main(int stringFile, char *condition1, char **condition2)
 	
 }//end main()
 
+/*************************************************************************************************************************************************/
+//FUNCTIONS
+
+int IfFileIsBatch() 
+{
+
+}//end IfFileIsBatch()
+
+void BatchExecute() 
+{
+
+}//end Batch Execute
+
+void ReadingCommand()
+{
+
+}//end ReadingCommand
+
+void InternalCommand() 
+{
+
+}//end InternalCommand()
+
+void CurrentDirectoryCommand()
+{
+
+}//end CurrentDirectoryCommand
+
+void ChangeDirectoryCommand() 
+{
+
+}//end ChangeDirectoryCommand()
+
+void HelpCommand() 
+{
+
+}//end HelpCommand()
+
+int IfCurrentlyInCommand() 
+{
+
+}//end IfCurrentlyInCommand
+
+
 
 
