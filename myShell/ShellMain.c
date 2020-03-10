@@ -45,6 +45,7 @@ int main(int stringFile, char *condition1, char **condition2)
 /*************************************************************************************************************************************************/
 //FUNCTIONS
 
+//INPUT TEXT FILE IS HERE
 int IfFileIsBatch(int tempStr, char* tempString1)
 {
 	//for this to be a batch file, the amount of arguments it needs to has is 2
@@ -114,8 +115,46 @@ void BatchExecute(int tempStr, char* tempString1[], char** tempString2, char* te
 
 }//end Batch Execute
 
+//ERROR could be here
 void ReadingCommand(int tempString1, char* condtion1[], char** condition2, char* tempString2)
 {
+
+	char *line = tempString2;
+	char* inCom[] = { "cd", "clr", "dir", "environ", "echo", "help", "pause", "quit" }; //8 elements in the array
+	int index = 0;
+	
+	printf("%c ", getcwd(tempString2, 150) ); 
+
+	fgets(tempString2, 150, stdin);
+	
+	if( (line = strchr(tempString2,'\n') ) ) 
+	{
+		*line = '\0';
+	}//end if()
+
+	fflush(stdout);
+	
+	while (index < 8) 
+	{
+	
+		if (strstr( tempString2, inCom[index]) != NULL) 
+		{
+		
+			ExecuteInCommand(condition2, index, tempString2);
+			return;
+		
+		}//end if()
+		
+		index++;
+
+	}//end while()
+	
+	if (strstr(inCom[index - 1], tempString2) == NULL)
+	{
+		puts("Error: invalid command!");
+	}//end if()
+
+
 
 }//end ReadingCommand
 
@@ -144,7 +183,7 @@ void InternalCommand(char* tempStr)
 
 }//end InternalCommand()
 
-void CurrentDirectoryCommand()
+void CurrentDirectoryCommand(char* tempStr)
 {
 
 }//end CurrentDirectoryCommand
