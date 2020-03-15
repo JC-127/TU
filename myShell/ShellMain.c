@@ -21,6 +21,8 @@
 //#define TRUE == 1;
 //#define FALSE == 0;
 
+int WaitingForCommand = 1; //this has to be true at first
+
 //MAIN 
 //these are not really conditions,
 //its really arguements but the term arg seemed redundant and overused
@@ -28,7 +30,6 @@ int main(int stringFile, char *condition1, char **condition2)
 {
 	//reminder for myself, in C 0 is false and 1 is true
 	//int WaitingForCommand = true;
-	int WaitingForCommand = 1; //this has to be true at first
 
 	char string1[150] = ""; //Empty character array initially
 	
@@ -51,10 +52,10 @@ int main(int stringFile, char *condition1, char **condition2)
 /*************************************************************************************************************************************************/
 //FUNCTIONS
 
-int IfFileIsBatch(int tempStr, char* tempString1)
+int IfFileIsBatch(char* stringBatchFile, int BatchPosition)
 {
 	//for this to be a batch file, the amount of arguments it needs to has is 2
-	if (tempStr == 2 && (strstr (tempString1, ".txt") != NULL) )
+	if (BatchPosition == 2 && (strstr (stringBatchFile, ".txt") != NULL) )
 	{
 		//its a batch file, return true.
 		printf("File is a batch file!\n");
@@ -72,11 +73,11 @@ int IfFileIsBatch(int tempStr, char* tempString1)
 
 }//end IfFileIsBatch()
 
-void BatchExecute(int tempStr, char* tempString1[], char** tempString2, char* tempString3) 
+void BatchExecute(int BEPosition, char* BECondition1[], char** BECondition2, char* BEstringFile) 
 {
 
 	FILE* myFile;
-	myFile = fopen(tempString1[1], "r");
+	myFile = fopen(BECondition1[1], "r");
 
 	//self Explanatory
 	if (myFile == NULL) 
@@ -98,12 +99,12 @@ void BatchExecute(int tempStr, char* tempString1[], char** tempString2, char* te
 			while (str != '\n')
 			{
 				//the position of the tempString3 at index IX is equal to the character STR
-				tempString3[ix] = str;
+				BEstringFile[ix] = str;
 				ix++;
 			}//end while()
 
 			//read if there is a command in the string that the user inputted			
-			ReadingCommand(tempStr, tempString1, tempString2, tempString3);
+			ReadingCommand(BEPosition, BECondition1, BECondition2, BEstringFile);
 			
 			//reset the index of the array to the first place holder
 			//reset the str to get the next character if there is one 
@@ -121,18 +122,18 @@ void BatchExecute(int tempStr, char* tempString1[], char** tempString2, char* te
 }//end Batch Execute
 
 //ERROR could be here
-void ReadingCommand(int tempString1, char* condtion1[], char** condition2, char* tempString2)
+void ReadingCommand(int ReadPosition, char* ReadCondtion1[], char** ReadCondition2, char* ReadStringFile)
 {
 
-	char *line = tempString2;
+	char *line = ReadStringFile;
 	char* inCom[] = { "cd", "clr", "dir", "environ", "echo", "help", "pause", "quit" }; //8 elements in the array
 	int index = 0;
 	
-	printf("%c ", getcwd(tempString2, 150) ); 
+	printf("%c ", getcwd(ReadStringFile, 150) ); 
 
-	fgets(tempString2, 150, stdin);
+	fgets(ReadStringFile, 150, stdin);
 	
-	if( (line = strchr(tempString2,'\n') ) ) 
+	if( (line = strchr(ReadStringFile,'\n') ) ) 
 	{
 		*line = '\0';
 	}//end if()
@@ -142,10 +143,10 @@ void ReadingCommand(int tempString1, char* condtion1[], char** condition2, char*
 	while (index < 8) 
 	{
 	
-		if (strstr( tempString2, inCom[index]) != NULL) 
+		if (strstr( ReadStringFile, inCom[index]) != NULL) 
 		{
 		
-			ExecuteInCommand(condition2, index, tempString2);
+			ExecuteInCommand(ReadCondition2, index, ReadStringFile);
 			return;
 		
 		}//end if()
@@ -154,43 +155,82 @@ void ReadingCommand(int tempString1, char* condtion1[], char** condition2, char*
 
 	}//end while()
 	
-	if (strstr(inCom[index - 1], tempString2) == NULL)
+	if (strstr(inCom[index - 1], ReadStringFile) == NULL)
 	{
 		puts("Error: invalid command!");
 	}//end if()
 		
 }//end ReadingCommand
 
-void InternalCommand(char* tempStr) 
+void ExecuteInternalCommand(int ICPosition, char* ICStringFile, char** ICCondition)
 {
-	char* inCom[] = { "cd", "clr", "dir", "environ", "echo", "help", "pause", "quit" };
-	int index = 0;
-	char* scan; //this is going to be used to check if the command is contained in the string
 
-	while (index < 0)
+	cmd = ICPosition;
+
+	switch (cmd) 
 	{
-		scan = strstr(inCom[index], tempStr);
+		
+	case cd: 
+		ChangeDirectoryCommand(ICStringFile);
+		break;
 
-		if (scan != NULL)
+	case clr:
+		printf("\033[H\033[2J");
+		break;
+
+	case dir:
+		CurrentDirectoryCommand(ICStringFile);
+		break;
+
+	case env:
+		while (*ICCondition)
 		{
-			//remind that true is 1 and false is 0
-			return 1;
+			print("%s\n", *ICCondition++);
+			break;
+		}//end while()
 
-		}//end if()
+	case echo:;
+		int index = 5;
 
-		index++;
+		for(index = 5; index <strlen(ICStringFile); index++) 
+		{
+			printf("%c", ICStringFile[index]);
+		}//end for()
 
-	}//end while()
+		puts("");
+		break;
 
-	return 0;
+	case help:
+		HelpCommand(ICStringFile);
+		break;
 
-}//end InternalCommand()
+	case paus:;
+
+		char c;
+
+		scanf("%c", &c);
+
+		while (c != '\n') 
+		{
+			c = getchar();
+		}//end while()
+
+		break;
+		
+	case quit:
+		WaitingForCommand = 0;
+		exit(0);
+		break;
+		
+	}//end switch
+	
+}//end IfCurrentlyInCommand
 
 //ISSUES HERE BECAUSE OF MSVS LIBRARY AND LINUX LIBRARY CONFLICTIONS
-void CurrentDirectoryCommand(char* tempStr)
+void CurrentDirectoryCommand(char* CDir)
 {
 	//this will be the character that will be stored in "dir" and sees if it matches "dir in the text file
-	char* CurrDir = strstr(tempStr, "dir");
+	char* CurrDir = strstr(CDir, "dir");
 
 	int index1 = 0, index2 = 0, condition = 0;
 
@@ -214,9 +254,9 @@ void CurrentDirectoryCommand(char* tempStr)
 	
 	if (condition == 1) 
 	{
-		while ( tempStr[index1] != '\0' )
+		while ( CDir[index1] != '\0' )
 		{
-			CurrDir[index1] = tempStr[index2];
+			CurrDir[index1] = CDir[index2];
 			index1++;
 			index2++;
 
@@ -255,13 +295,89 @@ void CurrentDirectoryCommand(char* tempStr)
 
 }//end CurrentDirectoryCommand
 
-void ChangeDirectoryCommand() 
+//Issues here because of MSVS and Linux Library Conflications
+void ChangeDirectoryCommand(char* CDStringFile) 
 {
+	char* dirFileName = CDStringFile;
+	char* dirSearch = CDStringFile;
+
+	dirFileName = strstr(CDStringFile, "Cd"); //cd in the original string file
+	dirSearch = strstr(CDStringFile, "cd"); //cd in the original string file
+
+	int condition = 0, index1 = 0, index2 = 1;
+	//index 2 is the space behind the character, thats why it is initialized to 1.
+
+	while ( index1 < strlen(dirSearch) - 2 ) 
+	{
+		char space = dirSearch[index1];
+		char nonSpace = dirSearch[index2];
+
+		if ( isspace(space) && !isspace(nonSpace) ) 
+		{
+			condition++;
+		}//end if()
+
+		index1++;
+		index2++;
+		
+	}//end while()
+
+	char NewDir[150];
+
+	if(condition == 1) 
+	{
+		index1 = 0;
+		index2 = 3; //this is after cd
+
+		while (index2 < strlen(dirFileName) && !isspace(dirFileName[index2] ) ) 
+		{
+			NewDir[index1] = dirFileName[index2];
+			index1++;
+			index2++;
+		}//end while()
+
+		NewDir[index1] = '\0';
+
+	}//end if()
+
+	if (condition > 1) 
+	{
+		printf("Error: More than one agruement...\n");
+	}//end if()
+
+	else 
+	{
+		DIR* dir = opendir(NewDir);
+
+		if (dir) 
+		{
+			chdir(NewDir);
+		}//end if()
+
+		else if (condition == 0) 
+		{
+			chrdir(".");
+			return;
+		}//end else if()
+
+		else if ( (!IfInternalCommand(NewDir) ) || (ENOENT == errno) )  
+		{
+			printf("Error: Directory %s is invalid or does not exist!\n", NewDir);
+		}//end elseif()
+
+		else 
+		{
+			printf("Error: Could not open directory!\n");
+			exit(0);
+		}//end else()
+
+	}//end else()
+
 
 }//end ChangeDirectoryCommand()
 
 //textfile of help commands will be found here.
-void HelpCommand(char* tempString) 
+void HelpCommand(char* HelpStringFile) 
 {
 
 	FILE* myFile;
@@ -278,28 +394,41 @@ void HelpCommand(char* tempString)
 
 	else
 	{
-		char tempStr;
+		char HelptempStr;
 		
-		while ( (tempStr = fgetc(myFile) ) != EOF)
+		while ( (HelptempStr = fgetc(myFile) ) != EOF)
 		{
-			printf("%c", tempStr);
+			printf("%c", HelptempStr);
 		}//end while()
 
 	}//end else()
 
 	fclose(myFile);
-
+T
 }//end HelpCommand()
 
-int IfCurrentlyInCommand() 
+int IfInCommand(char* IfInComStrFile)
 {
 
-}//end IfCurrentlyInCommand
+	char* inCom[] = { "cd", "clr", "dir", "env", "echo", "help", "pause", "quit" };
+	int index = 0;
+	char* scan; //this is going to be used to check if the command is contained in the string
 
-void ExecuteInCommand(int com, char* condition1, char** condition2)
-{
+	while (index < 0)
+	{
+		scan = strstr(inCom[index], IfInComStrFile);
 
-}//end ExecuteInCommand()
+		if (scan != NULL)
+		{
+			//remind that true is 1 and false is 0
+			return 1;
 
+		}//end if()
 
+		index++;
 
+	}//end while()
+
+	return 0;
+
+}//end InternalCommand()
