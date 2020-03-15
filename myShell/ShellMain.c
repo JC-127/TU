@@ -4,9 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//these two probably wont be necessary, but i added them just in case
+//these probably wont be necessary, but i added them just in case
 #include <string.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <errno.h>
+
+//these headers are in linux but not in MSVS
+#include <dirent.h>
+#include <unistd.h>
 
 //Header Inclusion
 #include "myShellHeader.h"
@@ -45,7 +51,6 @@ int main(int stringFile, char *condition1, char **condition2)
 /*************************************************************************************************************************************************/
 //FUNCTIONS
 
-//INPUT TEXT FILE IS HERE
 int IfFileIsBatch(int tempStr, char* tempString1)
 {
 	//for this to be a batch file, the amount of arguments it needs to has is 2
@@ -153,9 +158,7 @@ void ReadingCommand(int tempString1, char* condtion1[], char** condition2, char*
 	{
 		puts("Error: invalid command!");
 	}//end if()
-
-
-
+		
 }//end ReadingCommand
 
 void InternalCommand(char* tempStr) 
@@ -183,8 +186,72 @@ void InternalCommand(char* tempStr)
 
 }//end InternalCommand()
 
+//ISSUES HERE BECAUSE OF MSVS LIBRARY AND LINUX LIBRARY CONFLICTIONS
 void CurrentDirectoryCommand(char* tempStr)
 {
+	//this will be the character that will be stored in "dir" and sees if it matches "dir in the text file
+	char* CurrDir = strstr(tempStr, "dir");
+
+	int index1 = 0, index2 = 0, condition = 0;
+
+	//will compare the dir from the command manual in the textfile and the char pointer str
+	while (index1 < strlen(CurrDir) - 1) 
+	{
+		char searchBlank = CurrDir[index1];
+		char searchNonBlank = CurrDir[index2];
+
+		if ( isspace(searchBlank) && !isspace(searchNonBlank) ) 
+		{
+			condition++;
+		}//end if()
+
+		index1++;
+		index2++;
+
+	}//end while()
+
+	index1 = 0, index2 = 4;
+	
+	if (condition == 1) 
+	{
+		while ( tempStr[index1] != '\0' )
+		{
+			CurrDir[index1] = tempStr[index2];
+			index1++;
+			index2++;
+
+		}//end while()
+
+		struct dirent* DirEntry;
+		
+		DIR *dirdir;
+
+		dirdir = opendir(".");
+
+		if (dirdir == NULL) 
+		{
+			printf("Directory DNE or Not Found! %s\n", dir);
+		}//end if()
+
+		else 
+		{
+			while ( (DirEntry = readdir(dridir) != NULL ) 
+			{
+				printf("%s ", DirEntry->d_name);
+			}//end while()
+
+			puts("");
+			closedir(dirdir);
+
+		}//end else()
+
+	}//end if()
+
+	else 
+	{
+		printf("Directory is taking one condition...\n");
+	}//end else()
+
 
 }//end CurrentDirectoryCommand
 
@@ -193,11 +260,12 @@ void ChangeDirectoryCommand()
 
 }//end ChangeDirectoryCommand()
 
+//textfile of help commands will be found here.
 void HelpCommand(char* tempString) 
 {
 
 	FILE* myFile;
-	myFile = fopen(".txt", "r");
+	myFile = fopen("manual.txt", "r");
 
 	//if the file cant be opened or does not exist, print an error message
 	if (myFile == NULL)
@@ -228,6 +296,10 @@ int IfCurrentlyInCommand()
 
 }//end IfCurrentlyInCommand
 
+void ExecuteInCommand(int com, char* condition1, char** condition2)
+{
+
+}//end ExecuteInCommand()
 
 
 
