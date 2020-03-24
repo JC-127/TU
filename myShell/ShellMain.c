@@ -360,7 +360,7 @@ void ChangeDirectoryCommand(char* CDStringFile)
 			return;
 		}//end else if()
 
-		else if ( (!IfInternalCommand(NewDir) ) || (ENOENT == errno) )  
+		else if ( (!IfInCommand(NewDir) ) || (ENOENT == errno) )  
 		{
 			printf("Error: Directory %s is invalid or does not exist!\n", NewDir);
 		}//end elseif()
