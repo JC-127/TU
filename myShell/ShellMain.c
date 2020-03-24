@@ -165,7 +165,7 @@ void ReadingCommand(int ReadPosition, char* ReadCondtion1[], char** ReadConditio
 void ExecuteInternalCommand(int ICPosition, char* ICStringFile, char** ICCondition)
 {
 
-	cmd = ICPosition;
+	int cmd = ICPosition;
 
 	switch (cmd) 
 	{
@@ -275,7 +275,7 @@ void CurrentDirectoryCommand(char* CDir)
 
 		else 
 		{
-			while ( (DirEntry = readdir(dridir) != NULL ) 
+			while ( (DirEntry = readdir(dirdir) != NULL ) )
 			{
 				printf("%s ", DirEntry->d_name);
 			}//end while()
@@ -373,7 +373,6 @@ void ChangeDirectoryCommand(char* CDStringFile)
 
 	}//end else()
 
-
 }//end ChangeDirectoryCommand()
 
 //textfile of help commands will be found here.
@@ -404,7 +403,7 @@ void HelpCommand(char* HelpStringFile)
 	}//end else()
 
 	fclose(myFile);
-T
+
 }//end HelpCommand()
 
 int IfInCommand(char* IfInComStrFile)
