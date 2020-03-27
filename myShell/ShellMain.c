@@ -17,6 +17,7 @@
 //Header Inclusion
 #include "myShellHeader.h"
 
+
 //cant get it to work
 //#define TRUE == 1;
 //#define FALSE == 0;
@@ -146,7 +147,7 @@ void ReadingCommand(int ReadPosition, char* ReadCondtion1[], char** ReadConditio
 		if (strstr( ReadStringFile, inCom[index]) != NULL) 
 		{
 		
-			ExecuteInCommand(ReadCondition2, index, ReadStringFile);
+			ExecuteInternalCommand(ReadCondition2, index, ReadStringFile);
 			return;
 		
 		}//end if()
@@ -185,7 +186,7 @@ void ExecuteInternalCommand(int ICPosition, char* ICStringFile, char** ICConditi
 	case env:
 		while (*ICCondition)
 		{
-			print("%s\n", *ICCondition++);
+			printf("%s\n", *ICCondition++);
 			break;
 		}//end while()
 
@@ -266,16 +267,16 @@ void CurrentDirectoryCommand(char* CDir)
 		
 		DIR *dirdir;
 
-		dirdir = opendir(".");
+		dirdir = opendir("");
 
 		if (dirdir == NULL) 
 		{
-			printf("Directory DNE or Not Found! %s\n", dir);
+			printf("Directory DNE or Not Found! %c\n", dir);
 		}//end if()
 
 		else 
 		{
-			while ( (DirEntry = readdir(dirdir) != NULL ) )
+			while ( ( (DirEntry = readdir(dirdir) ) != NULL ) )
 			{
 				printf("%s ", DirEntry->d_name);
 			}//end while()
@@ -356,7 +357,7 @@ void ChangeDirectoryCommand(char* CDStringFile)
 
 		else if (condition == 0) 
 		{
-			chrdir(".");
+			chdir(".");
 			return;
 		}//end else if()
 
